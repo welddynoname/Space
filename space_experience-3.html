@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SPACE // Beyond the Known</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--cyan:#64f4ff;--violet:#a78bfa;--pink:#ff6bd6;--ink:#050714;--muted:#a7b1d0}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--ink);color:#f5f7ff;font-family:Inter,Arial,sans-serif}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 75% 25%,#39206a55,transparent 38%),radial-gradient(ellipse at 20% 85%,#006b8750,transparent 35%),linear-gradient(135deg,#070a1c,#080718 55%,#02040e);z-index:0}
+#stars{position:fixed;inset:0;width:100%;height:100%;z-index:0;opacity:.9}
+#scene3d{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.92}
+#app{position:relative;z-index:2;height:100%;display:flex;flex-direction:column}
+.top{height:76px;display:flex;align-items:center;justify-content:space-between;padding:0 5vw;border-bottom:1px solid #ffffff16;background:#06091866;backdrop-filter:blur(18px)}
+.brand{font:700 15px Orbitron;letter-spacing:.22em;color:var(--cyan)}.brand span{color:#fff}
+.topright{display:flex;align-items:center;gap:18px;color:#9ba8ca;font:11px Orbitron;letter-spacing:.14em}
+.pill{border:1px solid #64f4ff55;border-radius:30px;padding:9px 13px;color:var(--cyan);background:#64f4ff0c}
+main{flex:1;position:relative;display:flex;align-items:center;padding:4vh 8vw 7vh;min-height:0}
+.slide{display:none;width:min(1120px,100%);margin:auto;animation:arrive .75s cubic-bezier(.2,.8,.2,1) both}
+.slide.active{display:block}
+@keyframes arrive{from{opacity:0;transform:translateY(25px) scale(.985);filter:blur(8px)}to{opacity:1;transform:none;filter:blur(0)}}
+.eyebrow{font:600 11px Orbitron;letter-spacing:.28em;color:var(--cyan);text-transform:uppercase;margin-bottom:22px}
+h1,h2{font-family:Orbitron,sans-serif;line-height:1.1;margin:0;text-transform:uppercase}
+h1{font-size:clamp(48px,8vw,112px);letter-spacing:.035em;max-width:800px;text-shadow:0 0 35px #64f4ff36}
+h2{font-size:clamp(30px,4.5vw,58px);letter-spacing:.015em;margin-bottom:20px}
+.grad{background:linear-gradient(90deg,#fff 5%,#75f5ff 45%,#b59bff 85%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{font-size:clamp(16px,1.7vw,21px);line-height:1.7;color:#bdc8e5;max-width:650px;margin:24px 0 30px}
+.kicker{font:11px Orbitron;letter-spacing:.18em;color:#8290b9}
+.actions{display:flex;gap:13px;flex-wrap:wrap;margin-top:32px}
+button{cursor:pointer;font:600 11px Orbitron;letter-spacing:.14em;text-transform:uppercase;border:1px solid #64f4ff88;color:#eafcff;background:linear-gradient(110deg,#0c4051aa,#31245caa);padding:15px 21px;border-radius:4px;transition:.25s}
+button:hover{transform:translateY(-3px);box-shadow:0 8px 30px #64f4ff28;border-color:var(--cyan)}
+button.primary{background:linear-gradient(100deg,#0c9cac,#6650b8);border:0;color:white}
+button.ghost{background:#ffffff08;border-color:#ffffff35}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:30px}
+.panel{border:1px solid #8b9bd533;background:linear-gradient(145deg,#141c3bba,#0a1026c9);backdrop-filter:blur(14px);padding:22px 22px 24px;min-height:180px;position:relative;overflow:hidden}
+.panel:before{content:"";position:absolute;left:0;top:0;width:2px;height:100%;background:linear-gradient(var(--cyan),var(--violet))}
+.panel .num{font:11px Orbitron;color:var(--cyan);letter-spacing:.15em}
+.panel h3{font:600 16px Orbitron;margin:17px 0 10px}
+.panel p{color:#aeb9d7;line-height:1.6;font-size:13px;margin:0}
+.split{display:grid;grid-template-columns:1.05fr .95fr;gap:5vw;align-items:center}
+.visual{height:min(48vh,430px);min-height:280px;position:relative;border:1px solid #8b9bd533;background:radial-gradient(circle at 50% 50%,#1b2762aa,#090d24bb 60%,#050714);overflow:hidden}
+.visual:after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,transparent 50%,#64f4ff12);pointer-events:none}
+.planet{position:absolute;width:220px;height:220px;left:50%;top:50%;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 32% 28%,#e4fbff,#5b9ec8 18%,#29437f 47%,#0a102b 75%);box-shadow:inset -25px -20px 40px #000b,0 0 65px #5bc8ff55;animation:float 7s ease-in-out infinite}
+.planet.ring:after{content:"";position:absolute;width:340px;height:95px;border:13px solid #b9a4ff99;border-left-color:#d8d2ff55;border-right-color:#8f80d888;border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-22deg);box-shadow:0 0 18px #9f91ff55}
+@keyframes float{50%{transform:translate(-50%,-53%)}}
+.orbit{position:absolute;left:50%;top:50%;width:330px;height:110px;border:1px solid #64f4ff55;border-radius:50%;transform:translate(-50%,-50%) rotate(-20deg);animation:spin 14s linear infinite}
+@keyframes spin{to{transform:translate(-50%,-50%) rotate(340deg)}}
+.sun{position:absolute;left:50%;top:50%;width:105px;height:105px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff8c9,#ffb64e 38%,#f15d38 70%,#6b193f);box-shadow:0 0 35px #ffb44c,0 0 100px #ff783d88}
+.moon{position:absolute;width:18px;height:18px;border-radius:50%;background:#b9d8f5;box-shadow:0 0 15px #9bdfff;left:80%;top:44%}
+.statline{display:flex;gap:28px;margin-top:25px;flex-wrap:wrap}.stat strong{display:block;font:700 25px Orbitron;color:var(--cyan)}.stat small{color:#8998bd;font-size:10px;letter-spacing:.13em}
+.fact{border-left:2px solid var(--pink);padding:8px 0 8px 18px;color:#d5dcf1;line-height:1.65;margin-top:22px;max-width:600px}
+.quizbox{max-width:820px;border:1px solid #64f4ff55;background:#0b122be8;padding:clamp(22px,4vw,42px);box-shadow:0 20px 80px #0008}
+.qmeta{font:11px Orbitron;color:var(--cyan);letter-spacing:.2em;margin-bottom:18px}
+.question{font:600 clamp(20px,3vw,30px) Orbitron;line-height:1.4;margin-bottom:25px}
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.answer{text-align:left;text-transform:none;font:500 14px Inter;letter-spacing:0;background:#ffffff08;border:1px solid #9ca9d633;padding:17px;color:#eaf0ff}
+.answer.correct{border-color:#4be0a5;background:#1b8c5c33}.answer.wrong{border-color:#ff668f;background:#9b315033}
+.answer:disabled{cursor:default;transform:none}
+.feedback{min-height:28px;margin-top:18px;color:var(--cyan);font-size:14px}
+.bottom{height:68px;padding:0 5vw;display:flex;align-items:center;justify-content:space-between;border-top:1px solid #ffffff16;background:#06091866;backdrop-filter:blur(18px)}
+.progress{height:2px;background:#ffffff19;position:absolute;bottom:67px;left:0;right:0}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--violet));transition:width .5s}
+.nav{display:flex;gap:10px;align-items:center}.nav button{padding:11px 15px}
+.dots{display:flex;gap:7px}.dot{width:5px;height:5px;border-radius:50%;background:#586383}.dot.on{background:var(--cyan);box-shadow:0 0 10px var(--cyan)}
+.footerlabel{font:10px Orbitron;color:#7482a7;letter-spacing:.15em}
+#quizResult{font:600 21px Orbitron;color:var(--cyan);margin-top:16px}
+@media(max-width:760px){.top{height:60px;padding:0 18px}.topright .hide{display:none}main{padding:28px 22px 35px;overflow:auto;align-items:flex-start}.slide{margin:auto}.grid{grid-template-columns:1fr;gap:10px}.panel{min-height:0;padding:17px}.split{grid-template-columns:1fr}.visual{height:260px;min-height:260px;order:-1}.planet{width:160px;height:160px}.orbit{width:250px}.answers{grid-template-columns:1fr}.bottom{height:60px;padding:0 16px}.progress{bottom:59px}.footerlabel{font-size:8px}.topright{gap:8px;font-size:9px}h1{font-size:50px}}
+</style>
+</head>
+<body>
+<canvas id="stars"></canvas><div id="scene3d"></div>
+<div id="app">
+<header class="top"><div class="brand">ORBITAL<span> / </span>ACADEMY</div><div class="topright"><span class="hide">MISSION: KNOWLEDGE</span><span class="pill" id="chapter">01 / 08</span></div></header>
+<main>
+<section class="slide active">
+<div class="eyebrow">A journey beyond the known · science briefing 001</div>
+<h1><span class="grad">SPACE</span><br>IS CALLING.</h1>
+<p class="lead">An expedition through planets, stars and distant galaxies. Discover the universe — and test how much you know.</p>
+<div class="actions"><button class="primary" onclick="go(1)">Launch experience ↗</button><span class="kicker" style="align-self:center">SCROLL NOT REQUIRED · USE ARROW KEYS</span></div>
+</section>
+<section class="slide">
+<div class="eyebrow">01 / The big picture</div><h2>What is <span class="grad">space?</span></h2>
+<p class="lead">Space is the vast region beyond Earth's atmosphere. It contains everything from tiny particles to enormous galaxies.</p>
+<div class="grid">
+<div class="panel"><div class="num">01 — SCALE</div><h3>Almost endless</h3><p>The observable universe contains billions of galaxies, each with millions or billions of stars.</p></div>
+<div class="panel"><div class="num">02 — ENVIRONMENT</div><h3>Near-vacuum</h3><p>There is very little matter in space. Sound needs a medium, so it cannot travel through a vacuum.</p></div>
+<div class="panel"><div class="num">03 — MYSTERY</div><h3>Still expanding</h3><p>Scientists observe that the universe is expanding. Many questions about it remain unanswered.</p></div>
+</div></section>
+<section class="slide">
+<div class="eyebrow">02 / Our cosmic neighbourhood</div><div class="split"><div><h2>The <span class="grad">Solar System</span></h2><p class="lead">Our Solar System formed around 4.6 billion years ago. The Sun's gravity holds eight planets in orbit.</p><div class="fact">The four inner planets are rocky. The four outer planets are giant worlds — including gas giants and ice giants.</div><div class="statline"><div class="stat"><strong>8</strong><small>PLANETS</small></div><div class="stat"><strong>1</strong><small>STAR: THE SUN</small></div><div class="stat"><strong>4.6B</strong><small>YEARS OLD</small></div></div></div><div class="visual"><div class="sun"></div><div class="orbit"><div class="moon"></div></div><div style="position:absolute;bottom:17px;left:20px;font:10px Orbitron;color:#8ea0c9;letter-spacing:.14em">SOLAR SYSTEM // ORBITAL VIEW</div></div></div>
+</section>
+<section class="slide">
+<div class="eyebrow">03 / Our home world</div><div class="split"><div><h2><span class="grad">Earth</span> — the blue planet</h2><p class="lead">Earth is our home and the only planet known to support life. Its special conditions make liquid water and complex ecosystems possible.</p><div class="grid" style="grid-template-columns:1fr 1fr"><div class="panel"><h3>71%</h3><p>About 71% of Earth's surface is covered by water.</p></div><div class="panel"><h3>1 atmosphere</h3><p>Our atmosphere supplies essential gases and helps protect life.</p></div></div><div class="fact">Earth is not just a place to explore from — it is a planet we must protect.</div></div><div class="visual"><div class="planet"></div><div style="position:absolute;bottom:17px;left:20px;font:10px Orbitron;color:#8ea0c9;letter-spacing:.14em">EARTH // HABITABLE ZONE</div></div></div>
+</section>
+<section class="slide">
+<div class="eyebrow">04 / Deep space objects</div><h2>Giants of the <span class="grad">universe</span></h2><p class="lead">The night sky is filled with objects that challenge our imagination.</p>
+<div class="grid">
+<div class="panel"><div class="num">01 — STARS</div><h3>Cosmic furnaces</h3><p>Stars are huge spheres of hot plasma. They produce energy through nuclear fusion. The Sun is our nearest star.</p></div>
+<div class="panel"><div class="num">02 — GALAXIES</div><h3>Island universes</h3><p>Galaxies are vast systems of stars, gas, dust and dark matter held together by gravity. Our galaxy is the Milky Way.</p></div>
+<div class="panel"><div class="num">03 — BLACK HOLES</div><h3>Gravity extremes</h3><p>A black hole has gravity so strong that nothing — not even light — can escape from inside its event horizon.</p></div>
+</div></section>
+<section class="slide">
+<div class="eyebrow">05 / Human exploration</div><h2>How do we explore <span class="grad">space?</span></h2><p class="lead">Robots and astronauts use advanced technology to study distant worlds and understand our universe.</p>
+<div class="grid">
+<div class="panel"><div class="num">01 — OBSERVE</div><h3>Telescopes</h3><p>They collect light from distant objects. Space telescopes can observe wavelengths blocked by Earth's atmosphere.</p></div>
+<div class="panel"><div class="num">02 — CONNECT</div><h3>Satellites</h3><p>Satellites support GPS navigation, communication, weather forecasting and scientific research.</p></div>
+<div class="panel"><div class="num">03 — DISCOVER</div><h3>Rovers & probes</h3><p>Robotic explorers travel to other worlds, take pictures, analyse rocks and send data back to Earth.</p></div>
+</div></section>
+<section class="slide">
+<div class="eyebrow">06 / Signals from the cosmos</div><h2>Three facts to <span class="grad">blow your mind</span></h2>
+<div class="grid">
+<div class="panel"><div class="num">FACT 01</div><h3>A day on Venus</h3><p>Venus rotates very slowly. One rotation takes longer than one trip around the Sun.</p></div>
+<div class="panel"><div class="num">FACT 02</div><h3>The moving Moon</h3><p>The Moon is moving away from Earth by about 3.8 centimetres every year.</p></div>
+<div class="panel"><div class="num">FACT 03</div><h3>Look into the past</h3><p>Light takes time to travel. When we see distant stars, we see them as they were in the past.</p></div>
+</div><div class="fact">The farther away we look, the further back in time we can observe.</div>
+</section>
+<section class="slide">
+<div class="eyebrow">07 / Mission challenge</div><h2>Space <span class="grad">knowledge test</span></h2><p class="lead">Four questions. One mission. Choose the best answer to earn your score.</p>
+<div class="quizbox"><div class="qmeta" id="qmeta">QUESTION 01 / 04</div><div class="question" id="question">Which star is closest to Earth?</div><div class="answers" id="answers"></div><div class="feedback" id="feedback"></div><div class="actions" style="margin-top:12px"><button class="primary" id="nextQ" onclick="nextQuestion()" style="display:none">Next question →</button><button class="ghost" id="restart" onclick="restartQuiz()" style="display:none">Try again ↻</button></div><div id="quizResult"></div></div>
+</section>
+<section class="slide">
+<div class="eyebrow">Mission complete</div><h1 style="font-size:clamp(42px,7vw,88px)">KEEP<br><span class="grad">LOOKING UP.</span></h1><p class="lead">Every discovery begins with a question. The universe is vast, mysterious and waiting to be explored.</p><div class="actions"><button class="primary" onclick="go(0)">Restart experience ↻</button><span class="kicker" style="align-self:center">THANK YOU FOR EXPLORING WITH US</span></div>
+</section>
+</main>
+<div class="progress"><span id="bar"></span></div>
+<footer class="bottom"><div class="footerlabel">ORBITAL ACADEMY <span style="color:var(--cyan)">///</span> SPACE EXPLORATION</div><div class="dots" id="dots"></div><div class="nav"><button class="ghost" onclick="prev()">←</button><button class="primary" onclick="next()">NEXT →</button></div></footer>
+</div>
+<script>
+const slides=[...document.querySelectorAll('.slide')];let current=0;
+const dots=document.getElementById('dots');slides.forEach((_,i)=>{let d=document.createElement('i');d.className='dot'+(i===0?' on':'');dots.appendChild(d)});
+function go(n){current=Math.max(0,Math.min(slides.length-1,n));slides.forEach((s,i)=>s.classList.toggle('active',i===current));[...dots.children].forEach((d,i)=>d.classList.toggle('on',i===current));document.getElementById('chapter').textContent=String(current+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');document.getElementById('bar').style.width=((current+1)/slides.length*100)+'%';if(current===7&&qIndex===0&&!answered)renderQuestion();}
+function next(){go(current+1)}function prev(){go(current-1)}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){if(current!==7||answered)next()}if(e.key==='ArrowLeft')prev()});
+const qs=[
+{q:'Which star is closest to Earth?',a:['Sirius','The Sun','Polaris','Alpha Centauri'],c:1,why:'Correct! The Sun is our closest star, about 150 million kilometres away.'},
+{q:'How many planets are in our Solar System?',a:['7','8','9','10'],c:1,why:'Correct! There are eight recognised planets in our Solar System.'},
+{q:'Which planet is known as the Red Planet?',a:['Venus','Jupiter','Mars','Mercury'],c:2,why:'Correct! Iron-rich dust gives Mars its reddish appearance.'},
+{q:'Which of these cannot travel through a vacuum?',a:['Light','Radio waves','Sound','X-rays'],c:2,why:'Correct! Sound needs a medium such as air, water or solid material.'}
+];let qIndex=0,score=0,answered=false;
+function renderQuestion(){let q=qs[qIndex];document.getElementById('qmeta').textContent=`QUESTION ${String(qIndex+1).padStart(2,'0')} / 04`;document.getElementById('question').textContent=q.q;let a=document.getElementById('answers');a.innerHTML='';q.a.forEach((v,i)=>{let b=document.createElement('button');b.className='answer';b.textContent=String.fromCharCode(65+i)+'.  '+v;b.onclick=()=>choose(i);a.appendChild(b)});document.getElementById('feedback').textContent='';document.getElementById('nextQ').style.display='none';document.getElementById('restart').style.display='none';document.getElementById('quizResult').textContent='';answered=false}
+function choose(i){if(answered)return;answered=true;let q=qs[qIndex],bs=[...document.querySelectorAll('.answer')];bs.forEach((b,j)=>{b.disabled=true;if(j===q.c)b.classList.add('correct');else if(j===i)b.classList.add('wrong')});if(i===q.c){score++;document.getElementById('feedback').textContent=q.why}else document.getElementById('feedback').textContent='Not quite. '+q.why;let n=document.getElementById('nextQ');if(qIndex<qs.length-1){n.style.display='inline-block';n.textContent='Next question →'}else{n.style.display='none';document.getElementById('quizResult').textContent=`MISSION SCORE: ${score} / 4`;document.getElementById('restart').style.display='inline-block'}}
+function nextQuestion(){qIndex++;renderQuestion()}function restartQuiz(){qIndex=0;score=0;renderQuestion()}
+renderQuestion();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r152/three.min.js"></script>
+<script>
+(function(){
+const canvas=document.getElementById('stars');const ctx=canvas.getContext('2d');let w,h,stars=[];
+function resize(){w=canvas.width=innerWidth;h=canvas.height=innerHeight;stars=Array.from({length:Math.min(260,Math.floor(w*h/4500))},()=>({x:Math.random()*w,y:Math.random()*h,z:Math.random()*1.5+.3,r:Math.random()*1.3+.2,p:Math.random()*6.28}))}
+function draw(t){ctx.clearRect(0,0,w,h);for(const s of stars){let tw=.45+.55*Math.sin(t*.001*s.z+s.p);ctx.fillStyle=`rgba(180,220,255,${tw*.8})`;ctx.beginPath();ctx.arc(s.x,s.y,s.r*tw,0,Math.PI*2);ctx.fill();s.y+=.04*s.z;if(s.y>h)s.y=0;}requestAnimationFrame(draw)}
+addEventListener('resize',resize);resize();requestAnimationFrame(draw);
+const host=document.getElementById('scene3d');
+if(!window.THREE){host.style.display='none';return}
+const scene=new THREE.Scene();const camera=new THREE.PerspectiveCamera(55,innerWidth/innerHeight,.1,100);camera.position.set(0,0,8);
+const renderer=new THREE.WebGLRenderer({alpha:true,antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);host.appendChild(renderer.domElement);
+scene.add(new THREE.AmbientLight(0x8caaff,.65));const light=new THREE.PointLight(0x79dfff,3,30);light.position.set(3,2,5);scene.add(light);
+const group=new THREE.Group();scene.add(group);
+const geo=new THREE.SphereGeometry(1,64,64);
+function makePlanet(color,rough,metal){let m=new THREE.MeshStandardMaterial({color,roughness:rough,metalness:metal});return new THREE.Mesh(geo,m)}
+let p=makePlanet(0x294b9a,.72,.15);p.scale.setScalar(1.55);p.position.set(4.2,.7,-1);group.add(p);
+let ring=new THREE.Mesh(new THREE.RingGeometry(1.85,2.45,96),new THREE.MeshBasicMaterial({color:0x9b83ff,side:THREE.DoubleSide,transparent:true,opacity:.48}));ring.position.copy(p.position);ring.rotation.set(1.15,.1,-.3);group.add(ring);
+let moon=makePlanet(0x9bbbd8,.9,0);moon.scale.setScalar(.24);moon.position.set(2.5,-1.1,0);group.add(moon);
+let starGeo=new THREE.BufferGeometry(),pts=[];for(let i=0;i<1400;i++)pts.push((Math.random()-.5)*40,(Math.random()-.5)*25,-Math.random()*25);starGeo.setAttribute('position',new THREE.Float32BufferAttribute(pts,3));let starMesh=new THREE.Points(starGeo,new THREE.PointsMaterial({color:0x9dbdff,size:.025,transparent:true,opacity:.8}));scene.add(starMesh);
+let clock=new THREE.Clock();function animate(){requestAnimationFrame(animate);let t=clock.getElapsedTime();p.rotation.y=t*.12;ring.rotation.z=-.3+Math.sin(t*.15)*.04;moon.position.x=2.5+Math.sin(t*.35)*.25;moon.position.y=-1.1+Math.cos(t*.35)*.2;group.rotation.y=Math.sin(t*.08)*.06;starMesh.rotation.y=t*.003;renderer.render(scene,camera)}animate();
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+})();
+</script>
+</body></html>
